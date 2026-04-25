@@ -26,10 +26,14 @@ S:AddCallbackForAddon("MoveAnything", "MoveAnything", function()
 	end
 
 	for i = 1, 20 do
-		_G["MAMover" .. i .. "Backdrop"]:SetTemplate("Transparent")
-		_G["MAMover" .. i]:HookScript("OnShow", moverOnShow)
-		_G["MAMover" .. i]:SetScript("OnEnter", moverOnEnter)
-		_G["MAMover" .. i]:SetScript("OnLeave", moverOnLeave)
+		local mover = _G["MAMover" .. i]
+		local backdrop = _G["MAMover" .. i .. "Backdrop"]
+		if mover and backdrop then
+			backdrop:SetTemplate("Transparent")
+			mover:HookScript("OnShow", moverOnShow)
+			mover:SetScript("OnEnter", moverOnEnter)
+			mover:SetScript("OnLeave", moverOnLeave)
+		end
 	end
 
 	MAOptions:StripTextures()
@@ -46,13 +50,17 @@ S:AddCallbackForAddon("MoveAnything", "MoveAnything", function()
 	S:HandleButton(MAOptionsSync)
 
 	for i = 1, 17 do
-		_G["MAMove" .. i .. "Backdrop"]:SetTemplate("Default")
-		S:HandleCheckBox(_G["MAMove" .. i .. "Move"])
-		S:HandleCheckBox(_G["MAMove" .. i .. "Hide"])
-		S:HandleButton(_G["MAMove" .. i .. "Reset"])
+		local moveFrame = _G["MAMove" .. i]
+		local backdrop = _G["MAMove" .. i .. "Backdrop"]
+		if moveFrame and backdrop then
+			backdrop:SetTemplate("Default")
+			S:HandleCheckBox(_G["MAMove" .. i .. "Move"])
+			S:HandleCheckBox(_G["MAMove" .. i .. "Hide"])
+			S:HandleButton(_G["MAMove" .. i .. "Reset"])
 
-		if i ~= 1 then
-			_G["MAMove" .. i]:SetPoint("TOPLEFT", "MAMove" .. (i - 1), "BOTTOMLEFT", 0, -SPACING)
+			if i ~= 1 then
+				moveFrame:SetPoint("TOPLEFT", "MAMove" .. (i - 1), "BOTTOMLEFT", 0, -SPACING)
+			end
 		end
 	end
 
